@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - College Notes Portal{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero {
+        text-align: center;
+        padding: 60px 0;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        opacity: 0;
+        animation: slideUp 0.8s ease 0.2s forwards;
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+        color: var(--gray-color);
+        margin-bottom: 30px;
+        opacity: 0;
+        animation: slideUp 0.8s ease 0.4s forwards;
+    }
+
+    .role-selector {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 40px;
+        opacity: 0;
+        animation: slideUp 0.8s ease 0.6s forwards;
+    }
+
+    .role-card {
+        background-color: var(--card-bg);
+        border-radius: 16px;
+        padding: 40px 30px;
+        width: 300px;
+        text-align: center;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        cursor: pointer;
+        border: 2px solid transparent;
+        text-decoration: none;
+        color: var(--text-color);
+    }
+
+    .role-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--primary-color);
+    }
+
+    .role-card i {
+        font-size: 60px;
+        margin-bottom: 20px;
+        color: var(--primary-color);
+    }
+
+    .role-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: var(--text-color);
+    }
+
+    .role-card p {
+        color: var(--gray-color);
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+    }
+
+    .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 80px;
+        padding: 40px 0;
+    }
+
+    .feature-card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: var(--shadow);
+    }
+
+    .feature-card i {
+        font-size: 40px;
+        color: var(--primary-color);
+        margin-bottom: 15px;
+    }
+
+    .feature-card h4 {
+        margin-bottom: 10px;
+    }
+
+    .feature-card p {
+        color: var(--gray-color);
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+        .role-selector {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+        }
+
+        .role-card {
+            width: 100%;
+            max-width: 300px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>College Notes Portal</h1>
+    <p>Streamline your academic experience with seamless note sharing between professors and students. Access course materials anytime, anywhere.</p>
+    
+    <div class="role-selector">
+        <a href="{{ url_for('register') }}?role=student" class="role-card">
+            <i class="fas fa-user-graduate"></i>
+            <h3>Student</h3>
+            <p>Access and download notes from your professors</p>
+            <span class="btn btn-primary">Get Started</span>
+        </a>
+        <a href="{{ url_for('register') }}?role=professor" class="role-card">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <h3>Professor</h3>
+            <p>Upload and manage course notes for your students</p>
+            <span class="btn btn-primary">Get Started</span>
+        </a>
+    </div>
+</div>
+
+<div class="features">
+    <div class="feature-card">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <h4>Easy Upload</h4>
+        <p>Professors can quickly upload notes in various formats including PDF, DOC, PPT, and more.</p>
+    </div>
+    <div class="feature-card">
+        <i class="fas fa-download"></i>
+        <h4>Quick Download</h4>
+        <p>Students can instantly download course materials and study resources.</p>
+    </div>
+    <div class="feature-card">
+        <i class="fas fa-search"></i>
+        <h4>Smart Search</h4>
+        <p>Find notes easily by subject, semester, or keyword search.</p>
+    </div>
+    <div class="feature-card">
+        <i class="fas fa-shield-alt"></i>
+        <h4>Secure Access</h4>
+        <p>Role-based access ensures only authorized users can view and manage content.</p>
+    </div>
+</div>
+{% endblock %}

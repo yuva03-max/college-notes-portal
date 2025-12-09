@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Note - College Notes Portal{% endblock %}
+
+{% block extra_css %}
+<style>
+    .upload-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .page-title {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2rem;
+        color: var(--primary-color);
+    }
+
+    .upload-card {
+        background-color: var(--card-bg);
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: var(--shadow);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        background-color: var(--body-bg);
+        color: var(--text-color);
+        font-size: 16px;
+        transition: var(--transition);
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .file-upload {
+        border: 2px dashed var(--border-color);
+        border-radius: 12px;
+        padding: 40px;
+        text-align: center;
+        cursor: pointer;
+        transition: var(--transition);
+        background-color: var(--body-bg);
+    }
+
+    .file-upload:hover {
+        border-color: var(--primary-color);
+        background-color: rgba(67, 97, 238, 0.05);
+    }
+
+    .file-upload.dragover {
+        border-color: var(--primary-color);
+        background-color: rgba(67, 97, 238, 0.1);
+    }
+
+    .file-upload i {
+        font-size: 50px;
+        color: var(--primary-color);
+        margin-bottom: 15px;
+    }
+
+    .file-upload p {
+        color: var(--gray-color);
+        margin-bottom: 10px;
+    }
+
+    .file-upload .file-types {
+        font-size: 0.85rem;
+        color: var(--gray-color);
+    }
+
+    .file-upload input[type="file"] {
+        display: none;
+    }
+
+    .selected-file {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px;
+        background-color: rgba(67, 97, 238, 0.1);
+        border-radius: 8px;
+        margin-top: 15px;
+    }
+
+    .selected-file i {
+        font-size: 24px;
+        color: var(--primary-color);
+    }
+
+    .selected-file .file-name {
+        flex: 1;
+        font-weight: 500;
+    }
+
+    .selected-file .remove-file {
+        cursor: pointer;
+        color: var(--danger-color);
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    @media (max-width: 600px) {
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="upload-container">
+    <h1 class="page-title">
+        <i class="fas fa-cloud-upload-alt"></i> Upload Note
+    </h1>
+    
+    <div class="upload-card">
+        <form method="POST" enctype="multipart/form-data" id="uploadForm">
+            <div class="form-group">
+                <label for="title">Title *</label>
+                <input type="text" id="title" name="title" class="form-control" placeholder="Enter note title" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" class="form-control" placeholder="e.g., Mathematics">
+                </div>
+                <div class="form-group">
+                    <label for="semester">Semester</label>
+                    <select id="semester" name="semester" class="form-control">
+                        <option value="">Select Semester</option>
+                        <option value="1st Semester">1st Semester</option>
+                        <option value="2nd Semester">2nd Semester</option>
+                        <option value="3rd Semester">3rd Semester</option>
+                        <option value="4th Semester">4th Semester</option>
+                        <option value="5th Semester">5th Semester</option>
+                        <option value="6th Semester">6th Semester</option>
+                        <option value="7th Semester">7th Semester</option>
+                        <option value="8th Semester">8th Semester</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="form-control" placeholder="Brief description of the note content..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Upload File *</label>
+                <div class="file-upload" id="fileUpload">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Drag and drop your file here or click to browse</p>
+                    <span class="file-types">Supported formats: PDF, DOC, DOCX, PPT, PPTX, TXT, XLS, XLSX, ZIP, RAR (Max 16MB)</span>
+                    <input type="file" id="file" name="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.xls,.xlsx,.zip,.rar" required>
+                </div>
+                <div class="selected-file" id="selectedFile" style="display: none;">
+                    <i class="fas fa-file"></i>
+                    <span class="file-name" id="fileName"></span>
+                    <span class="remove-file" onclick="removeFile()"><i class="fas fa-times"></i></span>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-upload"></i> Upload Note
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const fileUpload = document.getElementById('fileUpload');
+    const fileInput = document.getElementById('file');
+    const selectedFile = document.getElementById('selectedFile');
+    const fileName = document.getElementById('fileName');
+
+    fileUpload.addEventListener('click', () => fileInput.click());
+
+    fileUpload.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        fileUpload.classList.add('dragover');
+    });
+
+    fileUpload.addEventListener('dragleave', () => {
+        fileUpload.classList.remove('dragover');
+    });
+
+    fileUpload.addEventListener('drop', (e) => {
+        e.preventDefault();
+        fileUpload.classList.remove('dragover');
+        if (e.dataTransfer.files.length) {
+            fileInput.files = e.dataTransfer.files;
+            showSelectedFile(e.dataTransfer.files[0]);
+        }
+    });
+
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length) {
+            showSelectedFile(fileInput.files[0]);
+        }
+    });
+
+    function showSelectedFile(file) {
+        fileName.textContent = file.name;
+        selectedFile.style.display = 'flex';
+        fileUpload.style.display = 'none';
+    }
+
+    function removeFile() {
+        fileInput.value = '';
+        selectedFile.style.display = 'none';
+        fileUpload.style.display = 'block';
+    }
+</script>
+{% endblock %}

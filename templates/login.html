@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}Login - College Notes Portal{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-container {
+        max-width: 450px;
+        margin: 0 auto;
+        background-color: var(--card-bg);
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: var(--shadow);
+        animation: slideUp 0.8s ease forwards;
+    }
+
+    .form-title {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2rem;
+        color: var(--primary-color);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        background-color: var(--body-bg);
+        color: var(--text-color);
+        font-size: 16px;
+        transition: var(--transition);
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    .form-footer {
+        text-align: center;
+        margin-top: 25px;
+    }
+
+    .form-footer a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .form-footer a:hover {
+        text-decoration: underline;
+    }
+
+    .login-icon {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .login-icon i {
+        font-size: 60px;
+        color: var(--primary-color);
+    }
+
+    .login-tabs {
+        display: flex;
+        margin-bottom: 25px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+    }
+
+    .login-tab {
+        flex: 1;
+        padding: 12px;
+        text-align: center;
+        cursor: pointer;
+        background-color: var(--body-bg);
+        border: none;
+        font-weight: 500;
+        color: var(--text-color);
+        transition: var(--transition);
+    }
+
+    .login-tab.active {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .login-tab:hover:not(.active) {
+        background-color: var(--border-color);
+    }
+
+    .password-field {
+        display: block;
+    }
+
+    .password-field.hidden {
+        display: none;
+    }
+
+    .input-hint {
+        font-size: 0.85rem;
+        color: var(--gray-color);
+        margin-top: 5px;
+    }
+
+    .forgot-link {
+        display: block;
+        text-align: right;
+        margin-top: 10px;
+        font-size: 0.9rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="login-icon">
+        <i class="fas fa-user-circle"></i>
+    </div>
+    <h2 class="form-title">Login</h2>
+    
+    <div class="login-tabs">
+        <button type="button" class="login-tab active" id="passwordTab" onclick="switchTab('password')">
+            <i class="fas fa-lock"></i> Password
+        </button>
+        <button type="button" class="login-tab" id="otpTab" onclick="switchTab('otp')">
+            <i class="fas fa-paper-plane"></i> OTP
+        </button>
+    </div>
+    
+    <form method="POST" action="{{ url_for('login') }}" id="loginForm">
+        <input type="hidden" name="login_method" id="loginMethod" value="password">
+        
+        <div class="form-group">
+            <label for="login_id">Email or Enrollment Number</label>
+            <input type="text" id="login_id" name="login_id" class="form-control" 
+                   placeholder="Enter email or enrollment number (students)" required>
+            <div class="input-hint">
+                <i class="fas fa-lightbulb"></i> Students: use email or enrollment number | Professors: use email only
+            </div>
+        </div>
+        
+        <div class="form-group password-field" id="passwordField">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-control" 
+                   placeholder="Enter your password">
+            <a href="{{ url_for('forgot_password') }}" class="forgot-link">Forgot Password?</a>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;" id="submitBtn">
+            <i class="fas fa-sign-in-alt"></i> <span id="submitText">Login</span>
+        </button>
+    </form>
+    
+    <div class="form-footer">
+        <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function switchTab(method) {
+        const passwordTab = document.getElementById('passwordTab');
+        const otpTab = document.getElementById('otpTab');
+        const passwordField = document.getElementById('passwordField');
+        const loginMethod = document.getElementById('loginMethod');
+        const submitText = document.getElementById('submitText');
+        const passwordInput = document.getElementById('password');
+        
+        if (method === 'password') {
+            passwordTab.classList.add('active');
+            otpTab.classList.remove('active');
+            passwordField.classList.remove('hidden');
+            loginMethod.value = 'password';
+            submitText.textContent = 'Login';
+            passwordInput.required = true;
+        } else {
+            otpTab.classList.add('active');
+            passwordTab.classList.remove('active');
+            passwordField.classList.add('hidden');
+            loginMethod.value = 'otp';
+            submitText.textContent = 'Send OTP';
+            passwordInput.required = false;
+        }
+    }
+</script>
+{% endblock %}

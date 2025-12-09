@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Verify OTP - College Notes Portal{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-container {
+        max-width: 450px;
+        margin: 0 auto;
+        background-color: var(--card-bg);
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: var(--shadow);
+        animation: slideUp 0.8s ease forwards;
+    }
+
+    .form-title {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2rem;
+        color: var(--primary-color);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        background-color: var(--body-bg);
+        color: var(--text-color);
+        font-size: 16px;
+        transition: var(--transition);
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    .otp-icon {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .otp-icon i {
+        font-size: 60px;
+        color: var(--primary-color);
+    }
+
+    .info-box {
+        background-color: rgba(67, 97, 238, 0.1);
+        border-left: 4px solid var(--primary-color);
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+    }
+
+    .info-box p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: var(--text-color);
+    }
+
+    .info-box i {
+        color: var(--primary-color);
+        margin-right: 8px;
+    }
+
+    .otp-input {
+        text-align: center;
+        font-size: 24px;
+        letter-spacing: 10px;
+        font-weight: 600;
+    }
+
+    .resend-section {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .resend-section p {
+        color: var(--gray-color);
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="otp-icon">
+        <i class="fas fa-shield-alt"></i>
+    </div>
+    <h2 class="form-title">Verify OTP</h2>
+    
+    <div class="info-box">
+        <p><i class="fas fa-info-circle"></i> Enter the 6-digit OTP sent to your email address. The OTP is valid for 10 minutes.</p>
+    </div>
+    
+    <form method="POST" action="{{ url_for('verify_otp') }}">
+        <div class="form-group">
+            <label for="otp">Enter OTP</label>
+            <input type="text" id="otp" name="otp" class="form-control otp-input" 
+                   placeholder="000000" maxlength="6" pattern="[0-9]{6}" required
+                   autocomplete="one-time-code">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+            <i class="fas fa-check"></i> Verify OTP
+        </button>
+    </form>
+    
+    <div class="resend-section">
+        <p>Didn't receive the OTP?</p>
+        <form method="POST" action="{{ url_for('resend_otp') }}" style="display: inline;">
+            <button type="submit" class="btn btn-outline">
+                <i class="fas fa-redo"></i> Resend OTP
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.getElementById('otp').addEventListener('input', function(e) {
+        this.value = this.value.replace(/[^0-9]/g, '').substring(0, 6);
+    });
+</script>
+{% endblock %}
